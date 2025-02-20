@@ -1,206 +1,149 @@
 \documentclass[a4paper]{article}
-\usepackage{graphicx}
-\usepackage{geometry}
-\usepackage{calc}
-\usepackage[percent]{overpic}
-\usepackage[medium]{HindMadurai}
-\usepackage[T1]{fontenc}
-\usepackage{tikz}
-\usepackage{multicol}
-\usepackage{enumitem}
-\usepackage{xcolor}
+\usepackage{graphicx}  % Allows inclusion of images
+\usepackage{geometry}  % Manages page layout
+\usepackage{calc}      % Enables calculations in LaTeX
+\usepackage{multicol}  % Supports multiple column layout
+\usepackage{enumitem}  % Customizes list environments
+\usepackage{xcolor}    % Enables color manipulation
+\usepackage{fontspec}  % Supports custom fonts
+\usepackage{tcolorbox} % Creates colored boxes
+\usepackage[svgnames]{xcolor} % Provides named colors
+\usepackage{lipsum}  
 
-% \renewcommand\familydefault{\sfdefault}
+% Load custom font from the 'font' directory
+\newfontface\fontseasons[Path=./fonts/]{TheSeasonsRegular.otf}
 
+% Set PublicSans as the main font with variations
+\setmainfont[
+Path=./fonts/,                  % Path to font files
+UprightFont = *-Regular.ttf,    % Regular font
+BoldFont    = *-Bold.ttf,       % Bold weight
+ItalicFont  = *-Italic.ttf,     % Italic style
+BoldItalicFont = *-BoldItalic.ttf % Bold + Italic
+]{PublicSans}
+
+% Recipe details
+\newcommand{\recipeName}{Soboro Don}
+\newcommand{\servings}{4}
+\newcommand{\prepTime}{120 MIN}
+\newcommand{\cookTime}{20 MIN}
+\newcommand{\recipeImage}{./images/soboro}
+
+
+% Define layout measurements
 \newlength{\picmargin}
 \setlength{\picmargin}{15pt}
-
 \newlength{\picwidth}
 \setlength{\picwidth}{\paperwidth - 2\picmargin}
 
+% Configure page geometry
 \geometry{
-    top=\picmargin,
-    bottom=\picmargin,
-    left=\picmargin,
-    textwidth=\picwidth
+	top=0pt,
+	bottom=\picmargin,
+	left=\picmargin,
+	right=\picmargin,
+	textwidth=\picwidth
 }
 
-\newcommand{\recipeTitle}[1]{
-  \vspace{0.2cm}
-  \parbox{\picwidth}{
-    \centering
-    \LARGE{\textbf{#1}}
-  }
+% Define color scheme
+\definecolor{bgIngredients}{HTML}{F8ECE9} 
+\definecolor{Pagebackground}{HTML}{eeeeee}
+\definecolor{captionColor}{HTML}{000000}
+\definecolor{textColor}{HTML}{000000}
+\definecolor{pinkTable}{HTML}{f8ece9}
+\definecolor{shadecolor}{named}{pinkTable}
+\pagecolor{Pagebackground} % Set background color
+
+% Define command for recipe title styling
+\newcommand{\recipeTitle}{
+	\vspace{0.2cm}
+	\parbox{\picwidth}{
+		\centering
+		\fontsize{28}{32}\selectfont\fontseasons{\recipeName}
+	}
 }
 
-\newcommand{\recipeDescription}[1]{
-  \vspace{0.2cm}
-  \parbox{\picwidth}{
-    \centering
-    \large
-    {#1}
-  }
-}
-
+% Define command for ingredients
 \newcommand{\ingredient}[1]{
-  \item[]{#1}\\
+	\item[]{#1}\\
 }
 
-\newcommand{\prep}[1]{
-  \textbf{Prep:} {#1}\\
-}
+\newcommand{\hide}[1]{} % Command to hide text
 
-\newcommand{\cooking}[1]{
-  \textbf{Cook:} {#1}\\
-}
-
-\newcommand{\hide}[1]
-{}
-
+% Define environment for instructions section
 \newenvironment{steps}
-{%
-  \begin{enumerate}[leftmargin=0.3cm]
+{
+	{\fontsize{22}{26}\selectfont\fontseasons Instructions}
+	\begin{enumerate}[leftmargin=0.4cm]
+	}
+	{
+	\end{enumerate}
 }
-{%
-  \end{enumerate}
-}
+
+% Define ingredients box with layout adjustments
 
 \newenvironment{ingredients}
-{%
-  \vspace{9pt}
-  \begin{itemize}[nosep, itemsep=2pt, leftmargin=3pt]
+{
+	\vspace{-32.8pt} % Adjusts vertical positioning
+	\begin{tcolorbox}[colback=bgIngredients, colframe=bgIngredients, width=\textwidth, boxsep=4pt, sharp corners, height=14cm, top=15pt]
+		{\fontsize{22}{26}\selectfont\fontseasons Ingredients}
+		\begin{itemize}[nosep, itemsep=-6pt, leftmargin=1pt]
+			\vspace{5.4pt}
+			\fontsize{10}{14}
+		}
+		{
+		\end{itemize}
+	\end{tcolorbox}
 }
-{%
-  \end{itemize}
-}
 
-\definecolor{Pagebackground}{HTML}
-{eeeeee} %<{type: "reference", id: "backgroundColor"}>
-\pagecolor{Pagebackground}
-
-\definecolor{captionColor}{HTML}
-{000000} %<{type: "reference", id: "imageCaptionColor"}>
-
-\definecolor{textColor}{HTML}
-{000000} %<{type: "reference", id: "textColor"}>
 
 \begin{document}
-\pagestyle{empty}
-%<{"type": "group", "description": "Recipe image"}
-\hspace{-\picmargin}%
-\begin{overpic}[
-    width=\picwidth,
-    height=0.70\picwidth,
-    % grid,
-    % tics=10
-  ]
-  %<{
-  %   type: "crop",
-  %   description: "",
-  %   aspect: 1.43,
-  %   inputValue: "raspberry-pie-cropped"
-  % }>
-    {raspberry-pie-cropped}
-  %>
-  \put (1,2) {
-    \parbox[b]{0.3\picwidth}
-    {
-      \textcolor{captionColor}{
-        \textbf
-        %<{
-        %   type: "text",
-        %   description: "Recipe image caption",
-        %   inputValue: "Caption. Say something sweet about this photo or recipe."
-        % }>
-          {Caption. Say something sweet about this photo or recipe.}
-        %>
-      }
-    }
-  }
-\end{overpic}
-%>
-
-\color{textColor}
-
-\vspace{0.5cm}
-\hspace{-\picmargin}
-%<{
-%   type: "text",
-%   description: "Recipe title",
-%   inputValue: "NANA'S RASPBERRY PIE"
-% }>
-\recipeTitle{NANA'S RASPBERRY PIE}
-%>
-
-\vspace{-0.5cm}
-\hspace{-\picmargin}
-\parbox{\picwidth}{
-  \centering
-  \begin{tikzpicture}
-    \draw[very thick] (-7,0) -- (7,0);
-  \end{tikzpicture}
-}
-% \line(1,0){12cm}
-
-\vspace{0.3cm}
-\hspace{-\picmargin}
-\recipeDescription{There was nothing like Nana's Raspberry Pie when we were younger. It's sweet, a bit tart, and tastes like summers on the porch in North Carolina.} %<{type: "textblock", description: "Recipe description", injectBrackets: true, inputValue: "There was nothing like Nana's Raspberry Pie when we were younger. It's sweet, a bit tart, and tastes like summers on the porch in North Carolina."}>
-
-\begin{multicols}{3}
-  \normalsize
-  \raggedright
-  \textbf{Ingredients}\\
-  \begin{ingredients}
-  %<{"type": "list", "description": "Ingredients"}
-    %<{"type": "text", "description": "Your ingredient", inputValue: "2 cups all-purpose flour"}
-      \ingredient{2 cups all-purpose flour}
-    %>
-    %<{"type": "text", "description": "Your ingredient", inputValue: "1.5 teaspoons unsweetened cocoa"}
-      \ingredient{1.5 teaspoons unsweetened cocoa}
-    %>
-    %<{"type": "text", "description": "Your ingredient", inputValue: "1 cup butter (do not user margarine)"}
-      \ingredient{1 cup butter (do not user margarine)}
-    %>
-    %<{"type": "text", "description": "Your ingredient", inputValue: "2 large eggs"}
-      \ingredient{2 large eggs}
-    %>
-    %<{"type": "text", "description": "Your ingredient", inputValue: "0.75 cups sugar"}
-      \ingredient{0.75 cups sugar}
-    %>
-    %<{"type": "text", "description": "Your ingredient", inputValue: "0.25 tablespoons pure vanilla extract"}
-      \ingredient{0.25 tablespoons pure vanilla extract}
-    %>
-  %>
-  \end{ingredients}
-  %<{"type": "group", "description": "Preparation time"}
-    \vspace{0.5cm}
-    \prep{45 min} %<{"type": "text", "description": "Preparation time", inputValue: "45 min"}>
-    \cooking{1.5 hours} %<{"type": "text", "description": "Cooking time", inputValue: "1.5 hours"}>
-    \vspace{0pt}
-  %>
-  \columnbreak
-  \begin{steps}
-    %<{"type": "list", "description": "Preparation and cooking steps"}
-    \item{Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat"}>
-    \item{Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus."}>
-    \item{Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula vulputate sem tristique cursus. Nam nulla quam, gravida non, commodo a, sodales sit amet, nisi.} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula vulputate sem tristique cursus. Nam nulla quam, gravida non, commodo a, sodales sit amet, nisi."}>
-    \item{Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc."}>
-    \item{Sed adipiscing ornare risus. Morbi est est, blandit sit amet, sagittis vel, euismod vel, velit. Pellentesque egestas sem. Suspendisse commodo ullamcorper magna.} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Sed adipiscing ornare risus. Morbi est est, blandit sit amet, sagittis vel, euismod vel, velit. Pellentesque egestas sem. Suspendisse commodo ullamcorper magna."}>
-    \item{Nulla sed leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-          Fusce lacinia arcu et nulla. Nulla vitae mauris non felis mollis faucibus.} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Nulla sed leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce lacinia arcu et nulla. Nulla vitae mauris non felis mollis faucibus."}>
-    \item{Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede."}>
-    \item{Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis."}>
-    \item{Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat.} %<{type: "textblock", description: "Your recipe step", injectBrackets: true, inputValue: "Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat."}>
-    %>
-  \end{steps}
-\end{multicols}
-
-%<{type: "group", description: "Color settings (optional)"}
-\hide{
-  %<{type: "color", description: "Page background color", initialColor: "#EEEEEE", id: "backgroundColor", inputValue: "EEEEEE"}>
-  %<{type: "color", description: "Image caption color", initialColor: "#000000", id: "imageCaptionColor", inputValue: "000000"}>
-  %<{type: "color", description: "Text color", initialColor: "#000000", id: "textColor", inputValue: "000000"}>
-}
-%>
-
+	\pagestyle{empty} % Remove default headers and footers
+	
+	\begin{center}
+		\makebox[\textwidth]{\includegraphics[width=\paperwidth]{\recipeImage}} % Add image
+	\end{center}
+	
+	\color{textColor} % Set text color
+	\vspace{0.6cm}
+	\hspace{-\picmargin}
+	\recipeTitle % Set recipe title
+	
+	\begin{center}
+		\begin{tabular}{c c c}
+			\fontsize{12}{16}\selectfont{SERVINGS: \servings}  \hspace{2.5cm} & \fontsize{12}{16}\selectfont{PREPPING TIME: \prepTime} & \hspace{.5cm} \fontsize{12}{16}\selectfont{COOKING TIME: \cookTime}
+		\end{tabular}
+		\vspace{2pt} % Adjust spacing
+		\begin{tikzpicture}
+			\draw[very thick] (4,0) -- (\linewidth+15pt,0); % Draw horizontal line
+		\end{tikzpicture}
+	\end{center}
+	\vspace{10pt} % Space between line and columns
+	\setlength{\columnsep}{-100pt} % Adjust column separation
+	\begin{multicols}{2} % Two-column layout
+		\normalsize
+		\raggedright
+		\hspace{32pt}
+		\begin{minipage}[t]{0.30\textwidth} % Allocate space for ingredients
+			\begin{ingredients}
+				\ingredient{250g thinly sliced beef strips}
+				\ingredient{1.5 teaspoons unsweetened cocoa}
+				\ingredient{1 cup butter (do not use margarine)}
+				\ingredient{3 tablespoons vegetable oil}
+				\ingredient{0.75 cups sugar}
+				\ingredient{0.25 tablespoons pure vanilla extract}
+			\end{ingredients}
+		\end{minipage}
+		
+		\begin{minipage}[t]{0.49\textwidth} % Allocate space for instructions
+			\begin{steps}
+				\item{Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.}
+				\item{At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.}
+				\item{At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.}
+				\item{At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.}
+				\item{Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.}
+				\item{Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.}		
+			\end{steps}
+		\end{minipage}
+	\end{multicols}
 \end{document}
